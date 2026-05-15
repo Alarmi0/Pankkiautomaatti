@@ -33,7 +33,7 @@ function processCard() {
         console.log("Kortti tunnistettu. Odotetaan PIN-koodia.");
         alert("Kortti syötetty onnistuneesti!");
     } else {
-        alert("Kortti on jo sisäll.");
+        alert("Kortti on jo sisällä.");
     }
 }
 
