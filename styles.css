@@ -172,3 +172,33 @@
 .btn-danger {
     background-color: #c00 !important;
 }
+/* Kun hiiri on napin päällä (Hover) */
+#start-btn:hover {
+    background-color: #002d6b;
+    transform: translateY(-2px); /* Nousee hieman ylös */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+/* Kun nappia painetaan (Active) */
+#start-btn:active {
+    transform: translateY(2px); /* Painuu alas */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#moving-card {
+    position: absolute;
+    width: 150px;       /* Säädä leveys kortin mittasuhteiden mukaan */
+    z-index: 50;        /* Automaatin taustakuvan päällä */
+    left: 175px;        /* Aloituskohta vaakasuunnassa (keskellä) */
+    bottom: -150px;     /* Aloittaa näkyvän alueen ulkopuolelta */
+    transition: all 1.0s cubic-bezier(0.4, 0, 0.2, 1); /* Sulava liike */
+}
+
+/* Luokka, joka aktivoidaan klikkauksella */
+.card-entering {
+    display: block !important;
+    bottom: 230px !important; /* Säädä tämä niin, että osuu korttiaukkoon */
+    transform: scale(0.1) rotateX(60deg); /* Pienenee ja kääntyy perspektiiviin */
+    opacity: 0;               /* Häviää lopuksi aukon sisään */
+}

@@ -120,14 +120,49 @@ function suoritaNosto(maara) {
     }
 }
 
-// Kortin syöttö (alkuperäinen toiminto, päivitetty ilman alertia)
+
 function processCard() {
     if (!korttiSisalla) {
         korttiSisalla = true;
-        console.log("Kortti sisällä.");
-        // Jos haluat että kortti pitää syöttää ENNEN kuin "Aloita" nappi toimii,
-        // voit lisätä logiikkaa tänne.
+        const cardImg = document.getElementById("moving-card");
+
+        // 1. Näytetään kortti aloituspaikassa
+        cardImg.style.display = "block";
+
+        // 2. Käynnistetään liuku-animaatio (pieni viive jotta selain ehtii reagoida)
+        setTimeout(() => {
+            cardImg.classList.add("card-entering");
+        }, 50);
+
+        // 3. Näytetään PIN-ruutu kun animaatio on valmis (1 sekunnin päästä)
+        setTimeout(() => {
+            const modal = document.getElementById("welcome-modal");
+            modal.style.display = "flex";
+            naytaKirjautuminen();
+            
+            // Piilotetaan animaatiokortti, se on nyt "koneen sisällä"
+            cardImg.style.display = "none";
+        }, 1100); 
+
+        console.log("Kortti syötetty: Pankkikortti.png");
     }
+}
+
+// Päivitetään tämä myös, jotta se kohdistuu heti input-kenttään
+function naytaKirjautuminen() {
+    const modalBody = document.getElementById("modal-body");
+    modalBody.innerHTML = `
+        <h2 style="margin-bottom: 5px;">SYÖTÄ PIN</h2>
+        <input type="password" id="pin-input" maxlength="4">
+        <br>
+        <button id="start-btn" onclick="tarkistaPin()">KIRJAUDU</button>
+    `;
+    
+    // Aktivoi tekstikenttä automaattisesti
+    setTimeout(() => {
+        const input = document.getElementById("pin-input");
+        if(input) input.focus();
+    }, 100);
 }
 
 console.log("Pankkiautomaatin logiikka ladattu onnistuneesti.");
