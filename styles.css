@@ -140,3 +140,35 @@
     display: flex;
     align-items: center;
 }
+/* Lisätty: Väritilojen tyylit viesteille */
+#modal-body h2 {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+}
+
+#modal-body p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+/* Lisätty: Korjaus taustavärin kirjoitusvirheeseen (s#ffffff -> #ffffff) */
+.modal-content {
+    background-color: #ffffff !important;
+    border: 3px solid #000;
+}
+
+/* Lisätty: Nosto- ja Saldo-näkymien numeroiden korostus */
+#modal-body h1 {
+    font-size: 32px;
+    margin: 10px 0;
+    color: #0045a1;
+}
+
+/* Lisätty: Peruuta/Takaisin-nappien erotusväri (vapaaehtoinen, jos käytät funktioissa) */
+.btn-secondary {
+    background-color: #666 !important;
+}
+
+.btn-danger {
+    background-color: #c00 !important;
+}

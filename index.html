@@ -11,28 +11,28 @@
     <div class="atm-container">
         <img src="Pankkiautomatti.png" alt="ATM" id="atm-image">
 
+        <div id="screen-content">
+            <h2 id="status-msg" style="display:none;">TERVETULOA</h2>
+            <p id="instruction-msg" style="display:none;">SYÖTÄ KORTTI</p>
+        </div>
 
         <div class="area" id="screen" onclick="handleAction('NÄYTTÖ')"></div>
-        <div class="area" id="buttons-left" onclick="handleAction('SIVUNAPIT')"></div>
+        <div class="area" id="buttons-left" onclick="handleAction('SIVUNAPIT', event)"></div>
         <div class="area" id="card-slot" onclick="processCard()"></div>
         <div class="area" id="keypad" onclick="handleAction('NÄPPÄIMISTÖ')"></div>
         <div class="area" id="check-slot" onclick="handleAction('CHECK SLOT')"></div>
-    </div>
 
-<div id="welcome-modal" class="modal-overlay">
-    <div class="modal-content" id="modal-container">
-        <!-- Tämä osio vaihtuu, kun painat "Aloita" -->
-        <div id="modal-body">
-            <h1>Tervetuloa!</h1>
-            <p>Käynnistä automaatti painamalla nappia.</p>
-            <button id="start-btn" onclick="naytaKirjautuminen()">Aloita</button>
+        <div id="welcome-modal" class="modal-overlay">
+            <div class="modal-content" id="modal-container">
+                <div id="modal-body">
+                    <h1>Tervetuloa!</h1>
+                    <p>Syötä kortti.</p>
+                    <button id="start-btn" onclick="naytaKirjautuminen()">Aloita</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
 
     <script src="scripts.js"></script>
-
-
 </body>
 </html>

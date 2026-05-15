@@ -1,60 +1,16 @@
-
+// --- MUUTTUJAT JA ASETUKSET ---
+const OIKEA_PIN = "1234";
 let korttiSisalla = false;
-let syotettyPin = "";
+let saldo = 150.20; // Aloitussaldo
 
 const otsikko = document.getElementById("status-msg");
 const ohje = document.getElementById("instruction-msg");
 const modal = document.getElementById("welcome-modal");
+const modalBody = document.getElementById("modal-body");
 
-
-/**
- */
-function closeModal() {
-    modal.style.display = "none";
-    
-
-    otsikko.style.display = "block";
-    ohje.style.display = "block";
-    
-    console.log("Automaatti valmis käyttöön.");
-}
-
-
-/**
- */
-function processCard() {
-    if (!korttiSisalla) {
-        korttiSisalla = true;  
-        
-
-        otsikko.innerText = "KORTTI LUETTU";
-        ohje.innerText = "SYÖTÄ PIN-KOODI";
-        
-        console.log("Kortti tunnistettu. Odotetaan PIN-koodia.");
-        alert("Kortti syötetty onnistuneesti!");
-    } else {
-        alert("Kortti on jo sisällä.");
-    }
-}
-
-/**
- */
-function handleAction(alueenNimi) {
-    console.log("Klikkasit aluetta: " + alueenNimi);
-    
-    if (alueenNimi === 'NÄPPÄIMISTÖ' && korttiSisalla) {
-        ohje.innerText = "NÄPPÄILLÄÄN...";
-    }
-}
-
-console.log("Pankkiautomaatin logiikka ladattu.");
-
-const OIKEA_PIN = "1234";
+// --- ALKUNÄYTTÖ JA KIRJAUTUMINEN ---
 
 function naytaKirjautuminen() {
-    const modalBody = document.getElementById("modal-body");
-    
-    // Vaihdetaan sisällöksi PIN-syöttö
     modalBody.innerHTML = `
         <h2 style="margin-bottom: 5px;">SYÖTÄ PIN</h2>
         <input type="password" id="pin-input" maxlength="4">
@@ -62,7 +18,6 @@ function naytaKirjautuminen() {
         <button id="start-btn" onclick="tarkistaPin()">KIRJAUDU</button>
     `;
     
-    // Kohdistetaan kursori automaattisesti kenttään
     setTimeout(() => {
         const input = document.getElementById("pin-input");
         if(input) input.focus();
@@ -70,22 +25,22 @@ function naytaKirjautuminen() {
 }
 
 function tarkistaPin() {
-    const syote = document.getElementById("pin-input").value;
+    const input = document.getElementById("pin-input");
     
-    if (syote === OIKEA_PIN) {
-        // Sen sijaan että suljettaisiin modal, näytetään valikko
+    if (input.value === OIKEA_PIN) {
         naytaValikko();
     } else {
-        alert("VÄÄRÄ PIN!");
-        document.getElementById("pin-input").value = "";
+        // Virheviesti näytölle ilman alertia
+        modalBody.innerHTML = `
+            <h2 style="color: red;">VÄÄRÄ PIN!</h2>
+            <button id="start-btn" onclick="naytaKirjautuminen()">Yritä uudelleen</button>
+        `;
     }
 }
 
+// --- PÄÄVALIKKO ---
+
 function naytaValikko() {
-    const modalBody = document.getElementById("modal-body");
-    
-    // Tyhjennetään laatikon tausta ja asetetaan valikko
-    // Käytetään flex-asettelua, jotta tekstit osuvat nappien kohdalle
     modalBody.innerHTML = `
         <div class="menu-container">
             <div class="menu-item">SALDO —</div>
@@ -95,19 +50,84 @@ function naytaValikko() {
     `;
     console.log("Valikko ladattu.");
 }
+
+// --- TOIMINNOT (Saldo, Talletus, Nosto) ---
+
 function handleAction(alue) {
     console.log("Klikkasit: " + alue);
-
-    // Jos klikataan sivunappeja, katsotaan korkeus (Y-koordinaatti)
+    
+    // Sivunapit toimivat vain kun valikko on auki
     if (alue === 'SIVUNAPIT') {
-        const y = event.offsetY; // Missä kohtaa nappeja klikattiin ylhäältä katsottuna
+        const y = event.offsetY; 
         
         if (y < 100) {
-            alert("Saldosi on 150.20 €");
+            naytaSaldo();
         } else if (y >= 100 && y < 200) {
-            alert("Talletus-toiminto tulossa pian!");
+            naytaTalletus();
         } else if (y >= 200) {
-            alert("Paljonko haluat nostaa?");
+            naytaNosto();
         }
     }
 }
+
+function naytaSaldo() {
+    modalBody.innerHTML = `
+        <h2>TILIN SALDO</h2>
+        <h1 style="font-size: 32px;">${saldo.toFixed(2)} €</h1>
+        <button id="start-btn" onclick="naytaValikko()">TAKAISIN</button>
+    `;
+}
+
+function naytaTalletus() {
+    modalBody.innerHTML = `
+        <h2>TALLETUS</h2>
+        <p>Syötä rahat seteliaukkoon.</p>
+        <button id="start-btn" onclick="lisaaRahaa(20)">Talleta 20€</button>
+        <br>
+        <button id="start-btn" style="background: gray;" onclick="naytaValikko()">VALMIS</button>
+    `;
+}
+
+function lisaaRahaa(maara) {
+    saldo += maara;
+    naytaSaldo();
+}
+
+function naytaNosto() {
+    modalBody.innerHTML = `
+        <h2>VALITSE SUMMA</h2>
+        <button id="start-btn" onclick="suoritaNosto(20)">20 €</button>
+        <button id="start-btn" onclick="suoritaNosto(40)">40 €</button>
+        <br>
+        <button id="start-btn" style="background: red;" onclick="naytaValikko()">PERUUTA</button>
+    `;
+}
+
+function suoritaNosto(maara) {
+    if (saldo >= maara) {
+        saldo -= maara;
+        modalBody.innerHTML = `
+            <h2 style="color: green;">NOSTO ONNISTUI</h2>
+            <p>Ole hyvä ja ota ${maara} €</p>
+            <button id="start-btn" onclick="naytaValikko()">OK</button>
+        `;
+    } else {
+        modalBody.innerHTML = `
+            <h2 style="color: red;">EI KATETTA</h2>
+            <p>Tililläsi ei ole tarpeeksi rahaa.</p>
+            <button id="start-btn" onclick="naytaValikko()">TAKAISIN</button>
+        `;
+    }
+}
+
+// Kortin syöttö (alkuperäinen toiminto, päivitetty ilman alertia)
+function processCard() {
+    if (!korttiSisalla) {
+        korttiSisalla = true;
+        console.log("Kortti sisällä.");
+        // Jos haluat että kortti pitää syöttää ENNEN kuin "Aloita" nappi toimii,
+        // voit lisätä logiikkaa tänne.
+    }
+}
+
+console.log("Pankkiautomaatin logiikka ladattu onnistuneesti.");
