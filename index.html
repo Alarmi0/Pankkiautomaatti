@@ -20,14 +20,19 @@
     </div>
 
 <div id="welcome-modal" class="modal-overlay">
-    <div class="modal-content">
-        <h1>Tervetuloa!</h1>
-        <p>Käynnistä automaatti painamalla nappia.</p>
-        <button id="start-btn" onclick="closeModal()">Aloita</button>
+    <div class="modal-content" id="modal-container">
+        <!-- Tämä osio vaihtuu, kun painat "Aloita" -->
+        <div id="modal-body">
+            <h1>Tervetuloa!</h1>
+            <p>Käynnistä automaatti painamalla nappia.</p>
+            <button id="start-btn" onclick="naytaKirjautuminen()">Aloita</button>
+        </div>
     </div>
 </div>
 
 
     <script src="scripts.js"></script>
+
+
 </body>
 </html>
