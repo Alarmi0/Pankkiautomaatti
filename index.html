@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pankkiautomaatti Projekti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="atm-container">
+        <img src="Pankkiautomatti.png" alt="ATM" id="atm-image">
+
+
+        <div class="area" id="screen" onclick="handleAction('NÄYTTÖ')"></div>
+        <div class="area" id="buttons-left" onclick="handleAction('SIVUNAPIT')"></div>
+        <div class="area" id="card-slot" onclick="processCard()"></div>
+        <div class="area" id="keypad" onclick="handleAction('NÄPPÄIMISTÖ')"></div>
+        <div class="area" id="check-slot" onclick="handleAction('CHECK SLOT')"></div>
+    </div>
+
+<div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h1>Tervetuloa!</h1>
+        <p>Käynnistä automaatti painamalla nappia.</p>
+        <button id="start-btn" onclick="closeModal()">Aloita</button>
+    </div>
+</div>
+
+
+    <script src="scripts.js"></script>
+</body>
+</html>

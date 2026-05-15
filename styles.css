@@ -1,0 +1,96 @@
+
+/* 1. SÄILIÖ */
+.atm-container {
+    position: relative;
+    width: 500px;
+    height: 800px;
+    margin: 20px auto;
+    border: 5px solid #222;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#atm-image {
+    width: 500px;
+    height: 800px;
+    display: block;
+    z-index: 1;
+}
+
+#screen-content {
+    position: absolute;
+    top: 70px;
+    left: 125px;
+    width: 330px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    z-index: 5;
+    pointer-events: none;
+}
+
+#status-msg { margin: 0; font-size: 24px; color: #111; }
+#instruction-msg { margin: 10px 0; font-size: 18px; color: #333; }
+
+.area {
+    position: absolute;
+    z-index: 10;
+    cursor: pointer;
+    /* border: 1px solid red; */
+}
+
+
+#screen { top: 55px; left: 79px; width: 420px; height: 378px; } /* Näyttö #screen { top: 55px; left: 79px; width: 420px; height: 378px; }*/
+#buttons-left { top: 100px; left: 8px; width: 60px; height: 300px; }
+#card-slot { top: 555px; left: 26px; width: 125px; height: 125px; }
+#keypad { top: 525px; left: 180px; width: 275px; height: 218px; }
+#check-slot { top: 465px; left: 210px; width: 220px; height: 34px; }
+
+
+
+
+/* POP-UP ikkuna (Alkunäyttö) */
+.modal-overlay {
+    position: fixed;
+    top: 140px;
+    left: 60px;
+    width: 500px;
+    height: 230px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; 
+}
+
+.modal-content {
+    background-color: s#ffffff;
+    
+    width: 225px; 
+    padding: 100px;
+    
+    border-radius: 7px;
+    
+    
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+
+#start-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #0045a1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#start-btn:hover {
+    background-color: #002d6b;
+}
