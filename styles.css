@@ -1,12 +1,11 @@
 
-/* 1. SÄILIÖ */
 .atm-container {
     position: relative;
     width: 500px;
     height: 800px;
     margin: 20px auto;
     border: 5px solid #222;
-    overflow: hidden;
+    overflow: hidden; /* Voit jättää tämän, kunhan koordinaatit ovat alla olevat */
     background-color: #000;
 }
 
@@ -51,20 +50,21 @@
 #check-slot { top: 465px; left: 210px; width: 220px; height: 34px; }
 
 
-
-
-/* POP-UP ikkuna (Alkunäyttö) */
 .modal-overlay {
-    position: fixed;
-    top: 140px;
-    left: 60px;
-    width: 500px;
-    height: 230px;
-
-    display: flex;
+    position: absolute;   /* Pakottaa popupin pysymään containerin sisällä */
+    
+    /* SÄÄDETÄÄN POPUP AUTOMAATIN HARMAAN RUUDUN PÄÄLLE */
+    /* Nämä arvot on laskettu 500x800px laatikon sisältä */
+    top: 55px;            /* Etäisyys automaatin yläreunasta alaspäin */
+    left: 45px;           /* Etäisyys automaatin vasemmasta reunasta oikealle */
+    width: 410px;         /* Harmaan näytön leveys (säädä jos tarpeen) */
+    height: 350px;        /* Harmaan näytön korkeus (säädä jos tarpeen) */
+    
+    display: flex;        /* Keskittää valkoisen PIN-laatikon harmaan alueen sisälle */
     justify-content: center;
     align-items: center;
-    z-index: 100; 
+    z-index: 100;         /* Nostaa sen pohjakuvan yläpuolelle */
+    background-color: transparent; /* Ei sotketa taustaa ylimääräisillä väreillä */
 }
 
 .modal-content {
@@ -164,15 +164,14 @@
     color: #0045a1;
 }
 
-/* Lisätty: Peruuta/Takaisin-nappien erotusväri (vapaaehtoinen, jos käytät funktioissa) */
+
 .btn-secondary {
     background-color: #666 !important;
 }
 
 .btn-danger {
     background-color: #c00 !important;
-}
-/* Kun hiiri on napin päällä (Hover) */
+} 
 #start-btn:hover {
     background-color: #002d6b;
     transform: translateY(-2px); /* Nousee hieman ylös */
@@ -182,23 +181,83 @@
 
 /* Kun nappia painetaan (Active) */
 #start-btn:active {
-    transform: translateY(2px); /* Painuu alas */
+    transform: translateY(2px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #moving-card {
+    display: none;
     position: absolute;
-    width: 150px;       /* Säädä leveys kortin mittasuhteiden mukaan */
-    z-index: 50;        /* Automaatin taustakuvan päällä */
-    left: 175px;        /* Aloituskohta vaakasuunnassa (keskellä) */
-    bottom: -150px;     /* Aloittaa näkyvän alueen ulkopuolelta */
-    transition: all 1.0s cubic-bezier(0.4, 0, 0.2, 1); /* Sulava liike */
+    
+    /* 1. KOKO: Määritellään uusi haluttu leveys ja pakotetaan kuvasuhde (101:140) */
+    width: 160px;               /* Säädä tästä kuinka isona haluat kortin lähtevän liikkeelle */
+    aspect-ratio: 101 / 140;    /* Tämä pitää kortin muodon oikeana, vaikka leveyttä muutetaan */
+    height: auto !important;    /* Estetään selainta pakottamasta alkuperäistä 140px korkeutta */
+    
+    /* 2. TERÄVYYS: Koska alkuperäinen kuva on pieni, tämä pitää sen tarkkana isonakin */
+    image-rendering: pixelated; 
+    
+    z-index: 9999;
+    transform-origin: bottom center;
 }
 
-/* Luokka, joka aktivoidaan klikkauksella */
 .card-entering {
     display: block !important;
-    bottom: 230px !important; /* Säädä tämä niin, että osuu korttiaukkoon */
-    transform: scale(0.1) rotateX(60deg); /* Pienenee ja kääntyy perspektiiviin */
-    opacity: 0;               /* Häviää lopuksi aukon sisään */
+    
+    bottom: 230px !important; 
+    left: 75px !important;    
+    
+    transform: scale(0.01) rotateX(70deg) !important; 
+    opacity: 0;
 }
+
+/* Koko näppäimistöalueen paikka */
+#keypad-matrix {
+    position: absolute;
+    
+    /* SÄÄDÄ NÄITÄ kahta siirtääksesi KOKO näppäimistöruudukkoa */
+    top: 535px;       /* Paljonko näppäimistö on ylhäältä alaspäin */
+    left: 187px;      /* Paljonko näppäimistö on vasemmasta reunasta oikealle */
+    
+    /* Koko näppäimistön alueen uudet, leveämmät mitat */
+    width: 260px;     /* Suurennettu leveys, jotta soikeat napit mahtuvat */
+    height: 200px;    
+    
+    display: grid;
+    /* MÄÄRITETÄÄN SARAKKEET: 3 kapeampaa neliötä (fr) ja 1 leveämpi toiminto (1.5fr) */
+    grid-template-columns: repeat(3, 1fr) 1.3fr; 
+    grid-template-rows: repeat(4, 1fr);
+    gap: 5px;         /* Väli nappien välissä */
+    z-index: 10;
+}
+
+/* TOIMINTONAPIT (Cancel, Clear, Enter) - SOIKEAMPI MUOTO */
+/* Nämä kohdistuvat vain sarakkeeseen 4 */
+#keypad-matrix div:nth-child(4n) {
+    border-radius: 20px; /* Tekee tästä sarakkeesta soikean */
+}
+
+/* Halutessasi voit hienosäätää värejä */
+.fn-cancel { border-color: darkred !important; }
+.fn-clear { border-color: orange !important; }
+.fn-enter { border-color: green !important; }
+
+
+/* Koko sivunappien alueen sijainti automaatissa */
+#side-buttons-container {
+    position: absolute;
+    
+    /* SÄÄDÄ NÄITÄ kahta siirtääksesi kaikkia 3 nappia yhtenä pakettina */
+    top: 117px;        /* Etäisyys automaatin yläreunasta */
+    left: 15px;       /* Etäisyys vasemmasta reunasta */
+    
+    width: 46
+    px;      /* Yhden sinisen napin leveys */
+    height: 377px;    /* Koko alueen korkeus ylhäältä alimpaan nappiin */
+    
+    display: flex;
+    flex-direction: column;
+    gap: 56px; /* Jakaa napit tasaisesti pystysuunnassa */
+    z-index: 20;
+}
+

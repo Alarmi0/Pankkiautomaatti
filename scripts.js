@@ -53,19 +53,70 @@ function naytaValikko() {
 
 // --- TOIMINNOT (Saldo, Talletus, Nosto) ---
 
-function handleAction(alue) {
+function handleAction(alue, event) {
     console.log("Klikkasit: " + alue);
     
-    // Sivunapit toimivat vain kun valikko on auki
-    if (alue === 'SIVUNAPIT') {
+    // 1. SIVUNAPIT (Saldo, Talletus, Nosto)
+    if (alue === 'SIVUNAPIT' && event) {
         const y = event.offsetY; 
-        
         if (y < 100) {
             naytaSaldo();
         } else if (y >= 100 && y < 200) {
             naytaTalletus();
         } else if (y >= 200) {
             naytaNosto();
+        }
+    }
+
+    // 2. FYYSISET NUMERONAPIT (Näppäimistö)
+    if (alue === 'NÄPPÄIMISTÖ' && event) {
+        const pinInput = document.getElementById("pin-input");
+        
+        // Jos PIN-ruutu ei ole auki, napit eivät tee mitään
+        if (!pinInput) return; 
+
+        // Lasketaan klikkauksen paikka näppäimistöalueella
+        const x = event.offsetX;
+        const y = event.offsetY;
+
+        // Koska näppäimistö on jaettu ruudukkoon (esim. 4 riviä, 4 saraketta)
+        // Lasketaan painettu numero koordinaattien perusteella:
+        let painettuNappi = "";
+
+        if (y < 50) { // Ensimmäinen rivi: 1, 2, 3, CANCEL
+            if (x < 40) painettuNappi = "1";
+            else if (x >= 40 && x < 80) painettuNappi = "2";
+            else if (x >= 80 && x < 120) painettuNappi = "3";
+            else if (x >= 120) { // CANCEL painettu -> tyhjennetään kenttä
+                pinInput.value = "";
+                return;
+            }
+        } 
+        else if (y >= 50 && y < 100) { // Toinen rivi: 4, 5, 6, CLEAR
+            if (x < 40) painettuNappi = "4";
+            else if (x >= 40 && x < 80) painettuNappi = "5";
+            else if (x >= 80 && x < 120) painettuNappi = "6";
+            else if (x >= 120) { // CLEAR painettu -> poistetaan viimeinen merkki
+                pinInput.value = pinInput.value.slice(0, -1);
+                return;
+            }
+        } 
+        else if (y >= 100 && y < 150) { // Kolmas rivi: 7, 8, 9, ENTER
+            if (x < 40) painettuNappi = "7";
+            else if (x >= 40 && x < 80) painettuNappi = "8";
+            else if (x >= 80 && x < 120) painettuNappi = "9";
+            else if (x >= 120) { // ENTER painettu -> tarkistetaan PIN
+                tarkistaPin();
+                return;
+            }
+        } 
+        else if (y >= 150) { // Neljäs rivi: *, 0, #, [Tyhjä]
+            if (x >= 40 && x < 80) painettuNappi = "0";
+        }
+
+        // Jos painettiin numeroa ja PIN-kentässä on vielä tilaa (max 4 merkkiä)
+        if (painettuNappi !== "" && pinInput.value.length < 4) {
+            pinInput.value += painettuNappi;
         }
     }
 }
@@ -126,43 +177,63 @@ function processCard() {
         korttiSisalla = true;
         const cardImg = document.getElementById("moving-card");
 
-        // 1. Näytetään kortti aloituspaikassa
+        // 1. PAKOTETAAN KORTTI VALTAVAKSI
+        cardImg.style.width = "380px"; 
+        cardImg.style.height = "auto";
+        cardImg.style.position = "absolute";
+        cardImg.style.zIndex = "1000"; 
+
+        // 2. ALOITUSPAIKKA
+        cardImg.style.left = "60px"; 
+        cardImg.style.bottom = "-400px"; 
+        cardImg.style.transition = "all 2.5s ease-in-out";
+
+        // Näytetään kortti lähtöasemassa
         cardImg.style.display = "block";
 
-        // 2. Käynnistetään liuku-animaatio (pieni viive jotta selain ehtii reagoida)
+        // 3. KÄYNNISTETÄÄN ANIMAATIO
         setTimeout(() => {
-            cardImg.classList.add("card-entering");
+            cardImg.style.bottom = "200px"; 
+            cardImg.style.transform = "rotateX(70deg) scale(0.1)";
+            cardImg.style.opacity = "0";
         }, 50);
 
-        // 3. Näytetään PIN-ruutu kun animaatio on valmis (1 sekunnin päästä)
+        // 4. AVATAAN POPUP JA KÄYNNISTETÄÄN TOIMINNOT
         setTimeout(() => {
             const modal = document.getElementById("welcome-modal");
             modal.style.display = "flex";
-            naytaKirjautuminen();
             
-            // Piilotetaan animaatiokortti, se on nyt "koneen sisällä"
+            // --- TÄMÄ RIVI KORJAA JUMIUTUMISEN ---
+            naytaKirjautuminen(); 
+            // -------------------------------------
+            
+            // Piilotetaan animaatiokortti kokonaan
             cardImg.style.display = "none";
-        }, 1100); 
-
-        console.log("Kortti syötetty: Pankkikortti.png");
+            // Nollataan tyylit seuraavaa kertaa varten
+            cardImg.style.transform = "none";
+            cardImg.style.opacity = "1";
+        }, 2600); 
     }
 }
 
-// Päivitetään tämä myös, jotta se kohdistuu heti input-kenttään
-function naytaKirjautuminen() {
-    const modalBody = document.getElementById("modal-body");
-    modalBody.innerHTML = `
-        <h2 style="margin-bottom: 5px;">SYÖTÄ PIN</h2>
-        <input type="password" id="pin-input" maxlength="4">
-        <br>
-        <button id="start-btn" onclick="tarkistaPin()">KIRJAUDU</button>
-    `;
-    
-    // Aktivoi tekstikenttä automaattisesti
-    setTimeout(() => {
-        const input = document.getElementById("pin-input");
-        if(input) input.focus();
-    }, 100);
+function handlePinButton(arvo) {
+    const pinInput = document.getElementById("pin-input");
+    if (!pinInput) return; // Jos PIN-ruutu ei ole auki, napit eivät tee mitään
+
+    console.log("Painoit fyysistä nappia: " + arvo);
+
+    if (arvo === 'CANCEL') {
+        pinInput.value = "";
+    } else if (arvo === 'CLEAR') {
+        pinInput.value = pinInput.value.slice(0, -1);
+    } else if (arvo === 'ENTER') {
+        tarkistaPin();
+    } else if (arvo !== '*' && arvo !== '#') {
+        // Jos on numero ja tilaa on vielä (max 4 merkkiä)
+        if (pinInput.value.length < 4) {
+            pinInput.value += arvo;
+        }
+    }
 }
 
 console.log("Pankkiautomaatin logiikka ladattu onnistuneesti.");

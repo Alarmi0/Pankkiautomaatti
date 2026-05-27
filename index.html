@@ -18,9 +18,33 @@
         </div>
 
         <div class="area" id="screen" onclick="handleAction('NÄYTTÖ')"></div>
-        <div class="area" id="buttons-left" onclick="handleAction('SIVUNAPIT', event)"></div>
+        <div id="side-buttons-container">
+    <div class="side-btn" onclick="naytaSaldo()"></div>
+    <div class="side-btn" onclick="naytaTalletus()"></div>
+    <div class="side-btn" onclick="naytaNosto()"></div>
+</div>
         <div class="area" id="card-slot" onclick="processCard()"></div>
-        <div class="area" id="keypad" onclick="handleAction('NÄPPÄIMISTÖ')"></div>
+        <div id="keypad-matrix">
+ <div class="pin-btn" onclick="handlePinButton('1')"></div>
+    <div class="pin-btn" onclick="handlePinButton('2')"></div>
+    <div class="pin-btn" onclick="handlePinButton('3')"></div>
+    <div class="pin-btn fn-cancel" onclick="handlePinButton('CANCEL')"></div>
+
+    <div class="pin-btn" onclick="handlePinButton('4')"></div>
+    <div class="pin-btn" onclick="handlePinButton('5')"></div>
+    <div class="pin-btn" onclick="handlePinButton('6')"></div>
+    <div class="pin-btn fn-clear" onclick="handlePinButton('CLEAR')"></div>
+
+    <div class="pin-btn" onclick="handlePinButton('7')"></div>
+    <div class="pin-btn" onclick="handlePinButton('8')"></div>
+    <div class="pin-btn" onclick="handlePinButton('9')"></div>
+    <div class="pin-btn fn-enter" onclick="handlePinButton('ENTER')"></div>
+
+    <div class="pin-btn" onclick="handlePinButton('*')"></div>
+    <div class="pin-btn" onclick="handlePinButton('0')"></div>
+    <div class="pin-btn" onclick="handlePinButton('#')"></div>
+    <div class="pin-btn blank-btn"></div>
+</div>
         <div class="area" id="check-slot" onclick="handleAction('CHECK SLOT')"></div>
 
 <div id="welcome-modal" class="modal-overlay" style="display: none;">
