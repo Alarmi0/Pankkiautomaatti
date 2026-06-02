@@ -3,10 +3,11 @@
     position: relative;
     width: 500px;
     height: 800px;
-    margin: 20px auto;
+    margin: 20px auto; 
     border: 5px solid #222;
-    overflow: hidden; /* Voit jättää tämän, kunhan koordinaatit ovat alla olevat */
     background-color: #000;
+   
+    overflow: visible;
 }
 
 #atm-image {
@@ -16,131 +17,93 @@
     z-index: 1;
 }
 
+
+.modal-overlay {
+    position: absolute !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 500px !important;
+    height: 800px !important;
+    display: none;
+    z-index: 100;
+    background-color: transparent;
+    pointer-events: none !important; 
+}
+
+
+#modal-container.modal-content {
+    position: absolute !important;
+    
+    
+    top: 53px !important;
+    left: 74px !important;
+    height: 394px !important; 
+    width: 430px !important; 
+    padding: 20px !important; 
+    border-radius: 1px;
+    border: 5px solid #000;
+    background-color: #d4ecfa !important;
+    text-align: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+
+    
+    pointer-events: auto !important; 
+}
+
+
+
 #screen-content {
     position: absolute;
-    top: 70px;
-    left: 125px;
-    width: 330px;
-    height: 350px;
+    top: 60px;          
+    left: 300px;         
+    width: 350px;       
+    height: 200px;      
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-family: 'Courier New', monospace;
-    z-index: 5;
-    pointer-events: none;
+    z-index: 10;
+    box-sizing: border-box;
 }
 
 #status-msg { margin: 0; font-size: 24px; color: #111; }
 #instruction-msg { margin: 10px 0; font-size: 18px; color: #333; }
 
-.area {
-    position: absolute;
-    z-index: 10;
-    cursor: pointer;
-    /* border: 1px solid red; */
-}
-
-
-#screen { top: 55px; left: 79px; width: 420px; height: 378px; } /* Näyttö #screen { top: 55px; left: 79px; width: 420px; height: 378px; }*/
-#buttons-left { top: 100px; left: 8px; width: 60px; height: 300px; }
-#card-slot { top: 555px; left: 26px; width: 125px; height: 125px; }
-#keypad { top: 525px; left: 180px; width: 275px; height: 218px; }
-#check-slot { top: 465px; left: 210px; width: 220px; height: 34px; }
-
-
-.modal-overlay {
-    position: absolute;   /* Pakottaa popupin pysymään containerin sisällä */
-    
-    /* SÄÄDETÄÄN POPUP AUTOMAATIN HARMAAN RUUDUN PÄÄLLE */
-    /* Nämä arvot on laskettu 500x800px laatikon sisältä */
-    top: 55px;            /* Etäisyys automaatin yläreunasta alaspäin */
-    left: 45px;           /* Etäisyys automaatin vasemmasta reunasta oikealle */
-    width: 410px;         /* Harmaan näytön leveys (säädä jos tarpeen) */
-    height: 350px;        /* Harmaan näytön korkeus (säädä jos tarpeen) */
-    
-    display: flex;        /* Keskittää valkoisen PIN-laatikon harmaan alueen sisälle */
-    justify-content: center;
-    align-items: center;
-    z-index: 100;         /* Nostaa sen pohjakuvan yläpuolelle */
-    background-color: transparent; /* Ei sotketa taustaa ylimääräisillä väreillä */
-}
-
-.modal-content {
-    background-color: s#ffffff;
-    
-    width: 225px; 
-    padding: 100px;
-    
-    border-radius: 7px;
-    
-    
-    text-align: center;
-    font-family: 'Courier New', monospace;
-}
-
-#start-btn {
-    padding: 15px 30px;
-    font-size: 18px;
-    background-color: #0045a1;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 20px;
-}
-
-#start-btn:hover {
-    background-color: #002d6b;
-}
-
-/* PIN-koodin syöttökenttä */
-#pin-input {
-    width: 120px;
-    height: 45px;
-    font-size: 28px;
-    text-align: center;
-    margin: 15px 0;
-    border: 3px solid #333;
-    border-radius: 5px;
-    background-color: #fff;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 8px; /* Tekee tähdistä selkeämpiä */
-}
-
-/* Varmistetaan että modal-content on joustava sisällölle */
-.modal-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px; /* Varmistaa että tila riittää */
-    padding: 20px !important; /* Korvataan aiempi 100px padding */
-}
-/* Valikon säiliö */
 .menu-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 250px; /* Säädä tämä vastaamaan nappien väliä */
+    
+    justify-content: flex-start; 
+    
+    gap: 32px !important; 
+    
     width: 100%;
     text-align: left;
-    padding-left: 10px;
-    margin-top: -20px; /* Nostaa tekstejä hieman ylemmäs */
+    padding-left: 15px;
+    
+    margin-top: -20px !important; 
+    
+    box-sizing: border-box;
 }
 
-/* Yksittäinen valikon teksti */
+
 .menu-item {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #000;
     font-family: 'Courier New', monospace;
-    height: 50px;
+    height: 75px;
     display: flex;
     align-items: center;
 }
-/* Lisätty: Väritilojen tyylit viesteille */
+
 #modal-body h2 {
     margin: 0 0 10px 0;
     font-size: 22px;
@@ -151,13 +114,6 @@
     margin-bottom: 15px;
 }
 
-/* Lisätty: Korjaus taustavärin kirjoitusvirheeseen (s#ffffff -> #ffffff) */
-.modal-content {
-    background-color: #ffffff !important;
-    border: 3px solid #000;
-}
-
-/* Lisätty: Nosto- ja Saldo-näkymien numeroiden korostus */
 #modal-body h1 {
     font-size: 32px;
     margin: 10px 0;
@@ -165,99 +121,111 @@
 }
 
 
-.btn-secondary {
-    background-color: #666 !important;
-}
-
-.btn-danger {
-    background-color: #c00 !important;
-} 
-#start-btn:hover {
-    background-color: #002d6b;
-    transform: translateY(-2px); /* Nousee hieman ylös */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+#start-btn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #0045a1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
     transition: all 0.2s ease;
 }
 
-/* Kun nappia painetaan (Active) */
+#start-btn:hover {
+    background-color: #002d6b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
 #start-btn:active {
     transform: translateY(2px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-#moving-card {
-    display: none;
+.btn-secondary { background-color: #666 !important; }
+.btn-danger { background-color: #c00 !important; } 
+
+#pin-input {
+    width: 120px;
+    height: 45px;
+    font-size: 28px;
+    text-align: center;
+    margin: 15px 0;
+    border: 3px solid #333;
+    border-radius: 5px;
+    background-color: #fff;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 8px; 
+}
+
+
+.area {
     position: absolute;
-    
-    /* 1. KOKO: Määritellään uusi haluttu leveys ja pakotetaan kuvasuhde (101:140) */
-    width: 160px;               /* Säädä tästä kuinka isona haluat kortin lähtevän liikkeelle */
-    aspect-ratio: 101 / 140;    /* Tämä pitää kortin muodon oikeana, vaikka leveyttä muutetaan */
-    height: auto !important;    /* Estetään selainta pakottamasta alkuperäistä 140px korkeutta */
-    
-    /* 2. TERÄVYYS: Koska alkuperäinen kuva on pieni, tämä pitää sen tarkkana isonakin */
-    image-rendering: pixelated; 
-    
-    z-index: 9999;
-    transform-origin: bottom center;
+    z-index: 10;
+    cursor: pointer;
 }
 
-.card-entering {
-    display: block !important;
-    
-    bottom: 230px !important; 
-    left: 75px !important;    
-    
-    transform: scale(0.01) rotateX(70deg) !important; 
-    opacity: 0;
+#screen { top: 55px; left: 79px; width: 420px; height: 378px; } 
+#buttons-left { top: 100px; left: 8px; width: 60px; height: 300px; }
+#card-slot { top: 555px; left: 26px; width: 125px; height: 125px; }
+#keypad { top: 525px; left: 180px; width: 275px; height: 218px; }
+#check-slot { top: 465px; left: 210px; width: 220px; height: 34px; }
+#receipt-slot {
+    position: absolute;
+    top: 473px;
+    left: 30px;
+    width: 116px;
+    height: 15px;
 }
 
-/* Koko näppäimistöalueen paikka */
+
 #keypad-matrix {
     position: absolute;
-    
-    /* SÄÄDÄ NÄITÄ kahta siirtääksesi KOKO näppäimistöruudukkoa */
-    top: 535px;       /* Paljonko näppäimistö on ylhäältä alaspäin */
-    left: 187px;      /* Paljonko näppäimistö on vasemmasta reunasta oikealle */
-    
-    /* Koko näppäimistön alueen uudet, leveämmät mitat */
-    width: 260px;     /* Suurennettu leveys, jotta soikeat napit mahtuvat */
+    top: 535px;       
+    left: 187px;      
+    width: 260px;     
     height: 200px;    
-    
     display: grid;
-    /* MÄÄRITETÄÄN SARAKKEET: 3 kapeampaa neliötä (fr) ja 1 leveämpi toiminto (1.5fr) */
     grid-template-columns: repeat(3, 1fr) 1.3fr; 
     grid-template-rows: repeat(4, 1fr);
-    gap: 5px;         /* Väli nappien välissä */
+    gap: 5px;         
     z-index: 10;
 }
 
-/* TOIMINTONAPIT (Cancel, Clear, Enter) - SOIKEAMPI MUOTO */
-/* Nämä kohdistuvat vain sarakkeeseen 4 */
 #keypad-matrix div:nth-child(4n) {
-    border-radius: 20px; /* Tekee tästä sarakkeesta soikean */
+    border-radius: 20px; 
 }
 
-/* Halutessasi voit hienosäätää värejä */
 .fn-cancel { border-color: darkred !important; }
 .fn-clear { border-color: orange !important; }
 .fn-enter { border-color: green !important; }
 
-
-/* Koko sivunappien alueen sijainti automaatissa */
 #side-buttons-container {
     position: absolute;
-    
-    /* SÄÄDÄ NÄITÄ kahta siirtääksesi kaikkia 3 nappia yhtenä pakettina */
-    top: 117px;        /* Etäisyys automaatin yläreunasta */
-    left: 15px;       /* Etäisyys vasemmasta reunasta */
-    
-    width: 46
-    px;      /* Yhden sinisen napin leveys */
-    height: 377px;    /* Koko alueen korkeus ylhäältä alimpaan nappiin */
-    
+    top: 117px;        
+    left: 15px;       
+    width: 46px;     
+    height: 377px;    
     display: flex;
     flex-direction: column;
-    gap: 56px; /* Jakaa napit tasaisesti pystysuunnassa */
+    gap: 56px; 
     z-index: 20;
 }
 
+
+#moving-card {
+    display: none; /* Piilossa aluksi */
+    position: absolute;
+    z-index: 9999;
+    width: 103px;
+    height: auto;
+    
+    /* Lähtöpiste (automaatin alareunan alapuolella) */
+    bottom: -140px; 
+    left: 40px;
+    
+    /* Tämä saa liikkeen tapahtumaan 1.5 sekunnissa */
+    transition: bottom 1.5s ease-in-out;
+}
