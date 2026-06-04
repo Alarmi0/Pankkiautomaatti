@@ -19,8 +19,12 @@
 
         <div class="area" id="screen" onclick="handleAction('NÄYTTÖ')"></div>
         <div class="area" id="buttons-left" onclick="handleAction('SIVUNAPIT', event)"></div>
+        <div id="signout-area" onclick="signOut()">SIGN OUT</div>
         
         <div class="area" id="card-slot" onclick="processCard()"></div>
+        
+        <button id="info-btn" onclick="showInfo()">INFO</button>
+
         
         <div id="keypad-matrix">
             <div class="pin-btn" onclick="handlePinButton('1')"></div>
